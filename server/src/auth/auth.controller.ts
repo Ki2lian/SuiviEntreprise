@@ -1,7 +1,7 @@
 import authService from './auth.service';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
-const register = async (req: Request, res: Response, next: NextFunction) => {
+const register = async (req: Request, res: Response) => {
     const { name, password } = req.body;
     try {
         const existingUser = await authService.findUserByName(name);

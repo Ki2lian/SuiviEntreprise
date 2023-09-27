@@ -2,7 +2,7 @@ import authService from '../src/auth/auth.service';
 import { prismaMock } from './singleton';
 
 jest.mock('bcrypt', () => ({
-    hashSync: (data: string, saltOrRounds: string | number) => data,
+    hashSync: (data: string) => data,
 }));
 
 describe('AuthService', () => {
