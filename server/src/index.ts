@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import routes from './routes';
 import helmet from 'helmet';
 import prisma from './database';
+import { createStream } from 'rotating-file-stream';
+import path from 'path';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -13,6 +16,19 @@ async function main() {
     app.use(helmet());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+
+    if (process.env.NODE_ENV !== 'production') {
+        app.use(morgan('dev'));
+    } else {
+        const logDirectory = path.join(__dirname, 'logs');
+        const accessLogStream = createStream('access.log', {
+            interval: '1d',
+            path: logDirectory,
+            compress: 'gzip',
+            maxFiles: 30,
+        });
+        app.use(morgan('combined', { stream: accessLogStream }));
+    }
 
     app.use('/', routes);
 
