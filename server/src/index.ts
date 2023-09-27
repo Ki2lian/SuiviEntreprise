@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import routes from './routes';
 import helmet from 'helmet';
+import prisma from './database';
 
 dotenv.config();
 
@@ -18,7 +19,12 @@ async function main() {
     app.listen(process.env.WEB_PORT, () => console.log(`App listening at http://localhost:${process.env.WEB_PORT}`));
 }
 
-main().catch(async e => {
-    console.error(e);
-    process.exit(1);
-});
+main()
+    .then(async () => {
+        await prisma.$disconnect();
+    })
+    .catch(async e => {
+        console.error(e);
+        await prisma.$disconnect();
+        process.exit(1);
+    });
