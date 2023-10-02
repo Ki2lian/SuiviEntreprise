@@ -1,16 +1,19 @@
 {
-  "github.copilot.enable": {
-    "*": true
-  },
-  "security.workspace.trust.untrustedFiles": "open",
-  "files.eol": "\n",
-  "git.autofetch": true,
-  "files.autoSave": "onFocusChange",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "editor.tabSize": 4,
-  "eslint.workingDirectories": ["./client", "./server"]
+    "github.copilot.enable": {
+        "*": true
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "files.eol": "\n",
+    "git.autofetch": true,
+    "files.autoSave": "onFocusChange",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.tabSize": 4,
+    "eslint.workingDirectories": ["./client", "./server"],
+    "[prisma]": {
+        "editor.defaultFormatter": "Prisma.prisma"
+    }
 }

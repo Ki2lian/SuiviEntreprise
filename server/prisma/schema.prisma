@@ -11,23 +11,23 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String @unique
-  password String
-  createdAt DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  password  String
+  createdAt DateTime  @default(now())
   companies Company[]
 }
 
 model Company {
-  id             Int      @id @default(autoincrement())
-  name           String
-  description    String?
-  location       String?
-  website        String?
+  id              Int       @id @default(autoincrement())
+  name            String
+  description     String?
+  location        String?
+  website         String?
   applicationDate DateTime?
-  userId         Int
-  user           User     @relation(fields: [userId], references: [id])
-  createdAt      DateTime @default(now())
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id])
+  createdAt       DateTime  @default(now())
 
   @@index([userId], name: "user_id_index")
 }
