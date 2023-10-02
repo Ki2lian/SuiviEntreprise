@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import jwtUtils from '../utils/jwt.util';
 
 const validateRegistrationData = (req: Request, res: Response, next: NextFunction) => {
     const { name, password } = req.body;
@@ -29,4 +30,19 @@ const validateLoginData = (req: Request, res: Response, next: NextFunction) => {
     next();
 };
 
-export default { validateRegistrationData, validateLoginData };
+const auth = async (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        await jwtUtils.verifyAccessToken(token).then(user => {
+            req.user = user as { payload: { userId: number } };
+            next();
+        });
+    } else {
+        return res.status(401).json({ error: 'Authentification requise' });
+    }
+};
+
+export default { validateRegistrationData, validateLoginData, auth };

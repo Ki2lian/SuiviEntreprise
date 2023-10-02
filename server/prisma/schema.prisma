@@ -25,6 +25,7 @@ model Company {
   location        String?
   website         String?
   applicationDate DateTime?
+  state           String    @default("pending")
   userId          Int
   user            User      @relation(fields: [userId], references: [id])
   createdAt       DateTime  @default(now())
