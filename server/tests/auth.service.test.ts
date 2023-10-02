@@ -7,11 +7,12 @@ jest.mock('bcrypt', () => ({
 
 describe('AuthService', () => {
     it('should create new user ', async () => {
+        const today = new Date();
         const user = {
             id: 1,
             name: 'testuser',
             password: 'Testpassword123*',
-            createdAt: new Date('2023-09-26T19:19:50.000Z'),
+            createdAt: today,
         };
 
         prismaMock.user.create.mockResolvedValue(user);
@@ -20,7 +21,7 @@ describe('AuthService', () => {
             id: 1,
             name: 'testuser',
             password: 'Testpassword123*',
-            createdAt: new Date('2023-09-26T19:19:50.000Z'),
+            createdAt: today,
         });
     });
 });
