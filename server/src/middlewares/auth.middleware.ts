@@ -15,4 +15,18 @@ const validateRegistrationData = (req: Request, res: Response, next: NextFunctio
     next();
 };
 
-export default { validateRegistrationData };
+const validateLoginData = (req: Request, res: Response, next: NextFunction) => {
+    const { name, password } = req.body;
+
+    if (!name || name.trim() === '') {
+        return res.status(400).json({ error: "Nom d'utilisateur requis" });
+    }
+
+    if (!password || password.trim() === '') {
+        return res.status(400).json({ error: 'Mot de passe requis' });
+    }
+
+    next();
+};
+
+export default { validateRegistrationData, validateLoginData };

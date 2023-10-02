@@ -21,4 +21,8 @@ const findUserByName = async (name: string) => {
     });
 };
 
-export default { register, findUserByName };
+const checkPassword = async (hashedPassword: string, password: string) => {
+    return bcrypt.compare(password, hashedPassword);
+};
+
+export default { register, findUserByName, checkPassword };
