@@ -1,6 +1,6 @@
 import authService from './auth.service';
 import { Request, Response } from 'express';
-import jwtUtils from '../utils/jwt';
+import jwtUtils from '../utils/jwt.util';
 
 const register = async (req: Request, res: Response) => {
     const { name, password } = req.body;

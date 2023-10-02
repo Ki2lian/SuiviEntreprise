@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import authController from '../src/auth/auth.controller';
 import authService from '../src/auth/auth.service';
-import jwtUtils from '../src/utils/jwt';
+import jwtUtils from '../src/utils/jwt.util';
 
 jest.mock('../src/auth/auth.service');
 jest.mock('../src/utils/jwt');
