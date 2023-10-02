@@ -25,3 +25,4 @@ dist
 *.sw?
 
 prisma/database.db
+prisma/database.db-journal
