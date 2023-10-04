@@ -11,7 +11,7 @@ const addCompany = async (req: Request, res: Response) => {
         res.status(201).json(company);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Une erreur s'est produite lors de l'ajout de l'entreprise" });
+        res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 };
 
