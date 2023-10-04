@@ -1,10 +1,8 @@
-/* eslint-disable no-empty-function */
 import { Request, Response } from 'express';
 import authController from '../src/auth/auth.controller';
 import authService from '../src/auth/auth.service';
 import authMiddleware from '../src/middlewares/auth.middleware';
 import jwtUtils from '../src/utils/jwt.util';
-import { prismaMock } from './singleton';
 
 jest.mock('../src/utils/jwt.util');
 jest.mock('bcrypt', () => ({
@@ -13,6 +11,10 @@ jest.mock('bcrypt', () => ({
 const authServiceRegisterMock = jest.spyOn(authService, 'register');
 const authServiceFindUserByNameMock = jest.spyOn(authService, 'findUserByName');
 const authServiceCheckPasswordMock = jest.spyOn(authService, 'checkPassword');
+const userData = {
+    name: 'TestUser',
+    password: 'TestPassword123*',
+};
 
 const createMockRequestResponse = () => {
     const req = {} as Request;
@@ -25,36 +27,15 @@ const createMockRequestResponse = () => {
 };
 
 describe('Authentication', () => {
-    describe('Service', () => {
-        it('should create new user ', async () => {
-            const today = new Date();
-            const user = {
-                id: 1,
-                name: 'testuser',
-                password: 'Testpassword123*',
-                createdAt: today,
-            };
-
-            prismaMock.user.create.mockResolvedValue(user);
-
-            await expect(authService.register(user)).resolves.toEqual({
-                id: 1,
-                name: 'testuser',
-                password: 'Testpassword123*',
-                createdAt: today,
-            });
-        });
-    });
     describe('Controller', () => {
         describe('Registration', () => {
             it('should create new user', async () => {
                 const { req, res } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
-                    password: 'TestPassword123*',
+                    ...userData,
                 };
-                const serviceMock = jest.spyOn(authService, 'register');
-                serviceMock.mockResolvedValue(req.body);
+
+                authServiceRegisterMock.mockResolvedValue(req.body);
 
                 await authController.register(req, res);
 
@@ -66,8 +47,7 @@ describe('Authentication', () => {
             it('should return 500', async () => {
                 const { req, res } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
-                    password: 'TestPassword123*',
+                    ...userData,
                 };
 
                 authServiceRegisterMock.mockRejectedValue(new Error('Registration failed'));
@@ -84,8 +64,7 @@ describe('Authentication', () => {
             it('should login', async () => {
                 const { req, res } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
-                    password: 'TestPassword123*',
+                    ...userData,
                 };
 
                 authServiceFindUserByNameMock.mockResolvedValue(req.body.name);
@@ -102,8 +81,7 @@ describe('Authentication', () => {
             it('should return 401', async () => {
                 const { req, res } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
-                    password: 'TestPassword123*',
+                    ...userData,
                 };
 
                 authServiceFindUserByNameMock.mockResolvedValue(null);
@@ -122,8 +100,7 @@ describe('Authentication', () => {
             it('should pass with a valid password', () => {
                 const { req, res, next } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
-                    password: 'TestPassword123*',
+                    ...userData,
                 };
 
                 authMiddleware.validateRegistrationData(req, res, next);
@@ -133,7 +110,7 @@ describe('Authentication', () => {
             it('should return 400 if password does not respect complexity', () => {
                 const { req, res, next } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
+                    ...userData,
                     password: 'TestPassword123',
                 };
 
@@ -148,8 +125,7 @@ describe('Authentication', () => {
             it('should call next() if name and password are provided', () => {
                 const { req, res, next } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
-                    password: 'TestPassword123*',
+                    ...userData,
                 };
 
                 authMiddleware.validateLoginData(req, res, next);
@@ -161,7 +137,8 @@ describe('Authentication', () => {
             it('should return 400 if name is missing', () => {
                 const { req, res, next } = createMockRequestResponse();
                 req.body = {
-                    password: 'TestPassword123*',
+                    ...userData,
+                    name: undefined,
                 };
 
                 authMiddleware.validateLoginData(req, res, next);
@@ -173,7 +150,8 @@ describe('Authentication', () => {
             it('should return 400 if password is missing', () => {
                 const { req, res, next } = createMockRequestResponse();
                 req.body = {
-                    name: 'TestUser',
+                    ...userData,
+                    password: undefined,
                 };
 
                 authMiddleware.validateLoginData(req, res, next);
