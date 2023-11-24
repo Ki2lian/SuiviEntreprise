@@ -17,6 +17,8 @@
         "planbcoding.vscode-react-refactor",
         "redhat.vscode-xml",
         "Codeium.codeium",
-        "Prisma.prisma"
+        "Prisma.prisma",
+        "yoavbls.pretty-ts-errors",
+        "GregorBiswanger.json2ts",
     ]
 }
