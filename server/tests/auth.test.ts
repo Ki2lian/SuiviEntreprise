@@ -145,7 +145,7 @@ describe('Authentication', () => {
 
                 expect(next).not.toHaveBeenCalled();
                 expect(res.status).toHaveBeenCalledWith(400);
-                expect(res.json).toHaveBeenCalledWith({ error: "Nom d'utilisateur requis" });
+                expect(res.json).toHaveBeenCalledWith({ error: "Nom d'utilisateur invalide" });
             });
             it('should return 400 if password is missing', () => {
                 const { req, res, next } = createMockRequestResponse();
