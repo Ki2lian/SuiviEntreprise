@@ -4,6 +4,8 @@ import companyMiddleware from '../middlewares/company.middleware';
 
 const router = express.Router();
 
-router.post('/add', companyMiddleware.validateAddCompanyData, companyController.addCompany);
+router.post('/add', companyMiddleware.validateCompanyData, companyController.addCompany);
+router.put('/:id', companyMiddleware.validateCompanyData, companyController.updateCompany);
+router.delete('/:id', companyController.deleteCompany);
 
 export default router;

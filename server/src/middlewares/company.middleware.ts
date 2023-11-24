@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import validationUtil from '../utils/validation.util';
+import { validStates } from '../companies/company.interface';
 
-const validateAddCompanyData = (req: Request, res: Response, next: NextFunction) => {
-    const { name, description, location, website, applicationDate } = req.body;
+const validateCompanyData = (req: Request, res: Response, next: NextFunction) => {
+    const { name, description, location, website, applicationDate, state } = req.body;
 
     if (!name || name.trim() === '') {
         return res.status(400).json({ error: "Nom de l'entreprise requis" });
@@ -24,7 +25,11 @@ const validateAddCompanyData = (req: Request, res: Response, next: NextFunction)
         return res.status(400).json({ error: 'Date de candidature invalide' });
     }
 
+    if (state && !validStates.includes(state.toLowerCase())) {
+        return res.status(400).json({ error: "L'état de la candidature n'est pas valide" });
+    }
+
     next();
 };
 
-export default { validateAddCompanyData };
+export default { validateCompanyData };

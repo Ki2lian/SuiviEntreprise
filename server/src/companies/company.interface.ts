@@ -1,4 +1,5 @@
-type CreateCompany = {
+type CompanyData = {
+    id?: number;
     name: string;
     description?: string;
     location?: string;
@@ -10,4 +11,6 @@ type CreateCompany = {
 
 export type TState = 'pending' | 'accepted' | 'rejected';
 
-export default CreateCompany;
+export const validStates: TState[] = ['pending', 'accepted', 'rejected'];
+
+export default CompanyData;

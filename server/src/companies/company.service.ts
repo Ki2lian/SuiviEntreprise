@@ -1,7 +1,7 @@
 import prisma from '../database';
-import CreateCompany from './company.interface';
+import CompanyData from './company.interface';
 
-const addCompany = async (companyData: CreateCompany) => {
+const addCompany = async (companyData: CompanyData) => {
     return await prisma.company.create({
         data: {
             name: companyData.name,
@@ -16,4 +16,47 @@ const addCompany = async (companyData: CreateCompany) => {
     });
 };
 
-export default { addCompany };
+const updateCompany = async (companyData: CompanyData) => {
+    const existingCompany = await prisma.company.findUnique({
+        where: {
+            id: companyData.id,
+        },
+    });
+
+    if (!existingCompany) {
+        return null;
+    }
+
+    return await prisma.company.update({
+        where: {
+            id: companyData.id,
+        },
+        data: {
+            name: companyData.name,
+            description: companyData.description,
+            location: companyData.location,
+            website: companyData.website,
+            applicationDate: companyData.applicationDate,
+            state: companyData.state?.toLowerCase(),
+        },
+    });
+};
+
+const deleteCompany = async (companyId: number) => {
+    const existingCompany = await prisma.company.findUnique({
+        where: {
+            id: companyId,
+        },
+    });
+
+    if (!existingCompany) {
+        return null;
+    }
+    return await prisma.company.delete({
+        where: {
+            id: companyId,
+        },
+    });
+};
+
+export default { addCompany, updateCompany, deleteCompany };
