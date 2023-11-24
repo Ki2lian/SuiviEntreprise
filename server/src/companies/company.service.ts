@@ -27,6 +27,10 @@ const updateCompany = async (companyData: CompanyData) => {
         return null;
     }
 
+    if (existingCompany.userId !== companyData.userId) {
+        return null;
+    }
+
     return await prisma.company.update({
         where: {
             id: companyData.id,
@@ -42,7 +46,7 @@ const updateCompany = async (companyData: CompanyData) => {
     });
 };
 
-const deleteCompany = async (companyId: number) => {
+const deleteCompany = async (companyId: number, userId: number) => {
     const existingCompany = await prisma.company.findUnique({
         where: {
             id: companyId,
@@ -52,6 +56,11 @@ const deleteCompany = async (companyId: number) => {
     if (!existingCompany) {
         return null;
     }
+
+    if (existingCompany.userId !== userId) {
+        return null;
+    }
+
     return await prisma.company.delete({
         where: {
             id: companyId,

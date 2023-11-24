@@ -17,9 +17,10 @@ const addCompany = async (req: Request, res: Response) => {
 
 const updateCompany = async (req: Request, res: Response) => {
     try {
+        const userId = req.user.payload.userId;
         const id = parseInt(req.params.id);
         const { name, description, location, website, applicationDate, state }: CompanyData = req.body;
-        const companyData = { id, name, description, location, website, applicationDate, state };
+        const companyData = { id, name, description, location, website, applicationDate, state, userId };
         const company = await companyService.updateCompany(companyData);
 
         if (!company) {
@@ -35,8 +36,9 @@ const updateCompany = async (req: Request, res: Response) => {
 
 const deleteCompany = async (req: Request, res: Response) => {
     try {
+        const userId = req.user.payload.userId;
         const id = parseInt(req.params.id);
-        const company = await companyService.deleteCompany(id);
+        const company = await companyService.deleteCompany(id, userId);
 
         if (!company) {
             return res.status(404).json({ error: 'Entreprise non trouvée' });
