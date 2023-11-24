@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import jwtUtils from '../utils/jwt.util';
 
+const validateUsername = (username: string) => {
+    const usernameRegex = /^[a-zA-Z0-9_]+$/;
+    return username && username.trim() !== '' && usernameRegex.test(username);
+};
+
 const validateRegistrationData = (req: Request, res: Response, next: NextFunction) => {
     const { name, password } = req.body;
 
-    if (!name || name.trim() === '') {
-        return res.status(400).json({ error: "Nom d'utilisateur requis" });
+    if (!validateUsername(name)) {
+        return res.status(400).json({ error: "Nom d'utilisateur invalide" });
     }
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}$/; // eslint-disable-line
@@ -19,8 +24,8 @@ const validateRegistrationData = (req: Request, res: Response, next: NextFunctio
 const validateLoginData = (req: Request, res: Response, next: NextFunction) => {
     const { name, password } = req.body;
 
-    if (!name || name.trim() === '') {
-        return res.status(400).json({ error: "Nom d'utilisateur requis" });
+    if (!validateUsername(name)) {
+        return res.status(400).json({ error: "Nom d'utilisateur invalide" });
     }
 
     if (!password || password.trim() === '') {
